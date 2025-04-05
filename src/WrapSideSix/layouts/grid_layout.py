@@ -1,4 +1,6 @@
-from PySide6.QtWidgets import (QLayout, QWidget, QGridLayout,QSizePolicy)
+# layouts/grid_layout.py
+
+from PySide6.QtWidgets import (QLayout, QWidget, QGroupBox,  QGridLayout,QSizePolicy)
 from PySide6.QtCore import Qt
 from dataclasses import dataclass
 from typing import Optional
@@ -55,7 +57,7 @@ class WSGridLayoutHandler:
       specification of row and column stretch factors, and widget alignment within grid cells.
 
       Attributes:
-          spacing (int): The spacing between widgets in the grid.
+
 
       Methods:
           add_widget_record(record): Adds a WidgetRecord to the layout, configuring its position,
@@ -140,13 +142,13 @@ class WSGridLayoutHandler:
     def create_vertical_spacer(self, height):
         spacer_widget = QWidget()
         spacer_widget.setFixedHeight(height)
-        spacer_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        spacer_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         return spacer_widget
 
     def create_horizontal_spacer(self, width):
         spacer_widget = QWidget()
         spacer_widget.setFixedWidth(width)
-        spacer_widget.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        spacer_widget.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
         return spacer_widget
 
     def align_widgets_top_left(self):
@@ -199,6 +201,25 @@ class WSGridLayoutHandler:
     def as_widget(self) -> QWidget:
         """Returns the QWidget containing the layout."""
         return self.container
+
+    def as_groupbox_widget(self, title: str = "", groupbox: QGroupBox = None) -> QGroupBox:
+        """
+        Returns a QGroupBox containing this layout.
+
+        If a groupbox is passed in, it uses that. Otherwise, it creates one with the optional title.
+        Your main program can then hold a reference to the returned QGroupBox for visibility control, etc.
+
+        Args:
+            title (str): Title for a new groupbox (only if groupbox is None).
+            groupbox (QGroupBox, optional): An existing groupbox to use.
+
+        Returns:
+            QGroupBox: The group box containing the layout.
+        """
+        if groupbox is None:
+            groupbox = QGroupBox(title)
+        groupbox.setLayout(self.layout)
+        return groupbox
 
     def hide_row(self, row):
         for record in self.widget_records:

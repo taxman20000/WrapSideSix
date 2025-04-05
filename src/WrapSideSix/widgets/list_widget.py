@@ -7,6 +7,7 @@ import logging
 # Logger Configuration
 logger = logging.getLogger(__name__)
 
+from ..ws_core import WSSortOrder
 
 class WSListSelectionWidget(QListWidget):
     selection_changed = Signal()
@@ -50,9 +51,9 @@ class WSListSelectionWidget(QListWidget):
         """Clears list and populates it with new items."""
         self.clear()
 
-        if sort_mode == "asc":
+        if sort_mode == WSSortOrder.ASCENDING:
             items = sorted(items, key=lambda x: x[display_index] if len(x) > display_index else '')
-        elif sort_mode == "desc":
+        elif sort_mode == WSSortOrder.DESCENDING:
             items = sorted(items, key=lambda x: x[display_index] if len(x) > display_index else '', reverse=True)
         # else: leave unsorted
 

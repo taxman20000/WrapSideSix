@@ -13,3 +13,4 @@ def some_function():
 
 # from .library import class or function
 from .components.records_navigation_widget import NavWidget
+from .ws_core import WSSortOrder

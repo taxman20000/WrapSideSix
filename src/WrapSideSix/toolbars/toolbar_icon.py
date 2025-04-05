@@ -49,7 +49,7 @@ class WSToolbarIcon(QToolBar):
         Create a dropdown menu button with an icon and optional icons in dropdown items.
         """
         if name in self.dropdowns:
-            print(f"Dropdown '{name}' already exists. Skipping.")
+            logger.info(f"Dropdown '{name}' already exists. Skipping.")
             return
 
         tool_button = QToolButton(self)
@@ -84,7 +84,7 @@ class WSToolbarIcon(QToolBar):
         If the position is out of range, the dropdown is appended at the end.
         """
         if name in self.dropdowns:
-            print(f"Dropdown '{name}' already exists. Skipping.")
+            logger.info(f"Dropdown '{name}' already exists. Skipping.")
             return
 
         tool_button = QToolButton(self)
@@ -156,7 +156,7 @@ class WSToolbarIcon(QToolBar):
             if widget:
                 widget.hide()
         else:
-            print(f"Action '{name}' not found.")
+            logger.warning(f"Action '{name}' not found.")
 
     def show_action_by_name(self, name):
         """
@@ -168,7 +168,7 @@ class WSToolbarIcon(QToolBar):
             if widget:
                 widget.show()
         else:
-            print(f"Action '{name}' not found.")
+            logger.warning(f"Action '{name}' not found.")
 
     def hide_dropdown_by_name(self, name):
         """
@@ -179,7 +179,7 @@ class WSToolbarIcon(QToolBar):
             action.setVisible(False)
             tool_button.hide()
         else:
-            print(f"Dropdown '{name}' not found.")
+            logger.warning("Dropdown '{name}' not found.")
 
     def show_dropdown_by_name(self, name):
         """
@@ -190,7 +190,7 @@ class WSToolbarIcon(QToolBar):
             action.setVisible(True)
             tool_button.show()
         else:
-            print(f"Dropdown '{name}' not found.")
+            logger.warning(f"Dropdown '{name}' not found.")
 
     # 🚀 New method to clear the entire toolbar
     def clear_toolbar(self):

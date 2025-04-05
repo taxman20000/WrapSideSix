@@ -9,7 +9,7 @@ import logging
 # Logger Configuration
 logger = logging.getLogger(__name__)
 
-
+from ..ws_core import WSAlignment, WSNavDefaults
 from ..icons import icons_mat_des
 icons_mat_des.qInitResources()
 
@@ -21,8 +21,8 @@ class NavWidget(QWidget):
     lastClicked = Signal()
     clearClicked = Signal()
 
-    def __init__(self, parent=None, use_icons=False, clear_button=False, margins=(5, 5, 5, 5),
-                 spacing=10, align='left'):
+    def __init__(self, parent=None, use_icons=False, clear_button=False, margins=WSNavDefaults.MARGINS,
+                 spacing=WSNavDefaults.SPACING, align=WSAlignment.LEFT):
         super().__init__(parent)
         self.use_icons = use_icons
         self.clear_button = clear_button
@@ -60,7 +60,7 @@ class NavWidget(QWidget):
         self.clearButton = QPushButton("X")
 
         # Set a fixed width for the buttons
-        button_width = 30  # Adjust this value as needed to fit your design
+        button_width = WSNavDefaults.NAV_BUTTON_WIDTH
         self.firstButton.setFixedWidth(button_width)
         self.previousButton.setFixedWidth(button_width)
         self.nextButton.setFixedWidth(button_width)
@@ -71,7 +71,7 @@ class NavWidget(QWidget):
         self.record_info_label = QLabel("0 of 0")
 
         # Add widgets to layout
-        if self.align == 'right' or self.align == 'center':
+        if self.align in (WSAlignment.RIGHT, WSAlignment.CENTER):
             layout.addStretch()
         layout.addWidget(self.firstButton)
         layout.addWidget(self.previousButton)
@@ -80,7 +80,7 @@ class NavWidget(QWidget):
         layout.addWidget(self.lastButton)
         if self.clear_button is True:
             layout.addWidget(self.clearButton)
-        if self.align == 'left' or self.align == "center":
+        if self.align in (WSAlignment.LEFT, WSAlignment.CENTER):
             layout.addStretch()
 
         # Connect signals
