@@ -1,9 +1,15 @@
 # ws_core.py
 
-import enum
+from enum import Enum
 from dataclasses import dataclass
 
-class WSSortOrder(enum.Enum):
+import logging
+
+# Logger Configuration
+logger = logging.getLogger(__name__)
+
+
+class WSSortOrder(Enum):
     ASCENDING = "asc"
     DESCENDING = "desc"
 
@@ -11,12 +17,12 @@ class WSSortOrder(enum.Enum):
         return "Ascending (A → Z)" if self is WSSortOrder.ASCENDING else "Descending (Z → A)"
 
 
-class WSActions(enum.Enum):
+class WSActions(Enum):
     SAVE = "save"
     OPEN = "open"
     DELETE = "delete"
 
-class WSAlignment(enum.Enum):
+class WSAlignment(Enum):
     LEFT = "left"
     RIGHT = "right"
     CENTER = "center"
