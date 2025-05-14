@@ -3,8 +3,8 @@
 from PySide6.QtWidgets import (QLayout, QWidget, QGroupBox,  QGridLayout,QSizePolicy)
 from PySide6.QtCore import Qt
 from dataclasses import dataclass
-from typing import Optional
-from collections import namedtuple
+from typing import Optional, Iterable
+# from collections import namedtuple
 import warnings
 import logging
 
@@ -12,8 +12,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-# Define a named tuple type for grid positions
-WSGridPosition = namedtuple('GridPosition', ['row', 'column'])
+# # Define a named tuple type for grid positions
+# WSGridPosition = namedtuple('GridPosition', ['row', 'column'])
+
+@dataclass(frozen=True)
+class WSGridPosition:
+    row: int
+    column: int
+
 
 @dataclass
 class WSGridRecord:
@@ -47,7 +53,6 @@ class WSGridRecord:
     min_width: Optional[int] = None
     col_span: Optional[int] = 1  # Default to 1, meaning no spanning
     row_span: Optional[int] = 1
-    # alignment: Optional[Qt.Alignment] = None
     alignment: Optional[Qt.AlignmentFlag] = None
 
 
@@ -93,7 +98,8 @@ class WSGridLayoutHandler:
     def add_widget_record(self, record: WSGridRecord):
         # Ensure the object is a widget; if it's a layout, convert it to a widget
         if isinstance(record.widget, QLayout):
-            record.widget = layout_to_widget(record.widget)
+            # record.widget = layout_to_widget(record.widget)
+            record.widget = WSGridLayoutHandler.from_layout(record.widget)
 
         # Set widget minimum width if specified
         if record.min_width is not None:
@@ -118,7 +124,7 @@ class WSGridLayoutHandler:
         # Keep track of the added widget
         self.widget_records.append(record)
 
-    def add_widget_records(self, records):
+    def add_widget_records(self, records: Iterable[WSGridRecord]):
         for record in records:
             self.add_widget_record(record)
 
@@ -267,9 +273,40 @@ class WSGridLayoutHandler:
                 return not record.widget.isVisible()
         return False
 
+    @classmethod
+    def from_layout(cls, layout: QLayout) -> QWidget:
+        """
+        Converts a given QLayout to a QWidget containing that layout.
 
+        Parameters:
+        layout (QLayout): The layout to be converted to a QWidget. Must be an instance of QLayout or its subclasses.
+
+        Returns:
+        QWidget: A widget that contains the provided layout.
+
+        Raises:
+        TypeError: If the layout is not an instance of QLayout.
+        ValueError: If the layout is already set on another widget.
+        """
+        if not isinstance(layout, QLayout):
+            raise TypeError("The provided layout must be an instance of QLayout or its subclasses.")
+
+        if layout.parentWidget() is not None:
+            raise ValueError("The provided layout is already set on another widget.")
+
+        # Create a new QWidget
+        widget = QWidget()
+
+        # Set the provided layout to the widget
+        widget.setLayout(layout)
+
+        return widget
+
+# TODO: Remove this function after verifying it's no longer used
 def layout_to_widget(layout: QLayout) -> QWidget:
     """
+    DEPRECATED: Use WSGridLayoutHandler.from_layout() instead.
+
     Converts a given QLayout to a QWidget containing that layout.
 
     Parameters:
@@ -282,6 +319,14 @@ def layout_to_widget(layout: QLayout) -> QWidget:
     TypeError: If the layout is not an instance of QLayout.
     ValueError: If the layout is already set on another widget.
     """
+
+    warnings.warn(
+        "layout_to_widget() is deprecated and will be removed in a future version. "
+        "Use WSGridLayoutHandler.from_layout() instead.",
+        DeprecationWarning,
+        stacklevel=2
+    )
+
     if not isinstance(layout, QLayout):
         raise TypeError("The provided layout must be an instance of QLayout or its subclasses.")
 

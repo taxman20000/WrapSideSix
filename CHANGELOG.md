@@ -8,6 +8,13 @@ Removed: Backward-incompatible removals.
 Fixed: Bug fixes.
 Security: Security patches (critical to highlight). 
 
+## [0.1.2] - TBD
+### Added
+-
+
+### Changed
+- 
+
 ## [0.1.1] - 2025-04-09
 ### Added
 - CHANGELOG.py
