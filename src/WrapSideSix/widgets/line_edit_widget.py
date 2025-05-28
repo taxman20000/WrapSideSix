@@ -231,6 +231,33 @@ class WSLineButtonFile(WSLineButton):
         return self.get_path().is_file()
 
 
+class WSLineButtonClear(WSLineList):
+    """
+    A QLineEdit with a clear button (X icon). The button clears the text when clicked.
+    """
+    def __init__(self, parent=None, button_icon=":/icons/mat_des/clear_24dp.png"):
+        super().__init__(parent)
+        self.setReadOnly(False)  # Allow editing
+
+        self.button = QPushButton(self)
+        self.button.setIcon(QIcon(button_icon))
+        self.button.setText("")  # No text, only the icon
+        self.button.setFixedSize(QSize(20, self.sizeHint().height()))
+        self.button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
+        self.button.clicked.connect(self.clear_text)
+
+        self.setContentsMargins(0, 0, self.button.width(), 0)
+        self.textChanged.connect(self.adjust_button_position)
+        self.resizeEvent = self.adjust_button_position
+
+    def adjust_button_position(self, *args):
+        self.button.move(self.width() - self.button.width(), 0)
+
+    def clear_text(self):
+        self.clear()
+
+
 class WSLineButtonList(WSLineButton):
     pass
 

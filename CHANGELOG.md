@@ -8,12 +8,10 @@ Removed: Backward-incompatible removals.
 Fixed: Bug fixes.
 Security: Security patches (critical to highlight). 
 
-## [0.1.2] - TBD
+## [0.1.3] - 2025-05-28
 ### Added
--
-
-### Changed
-- 
+- tasks/thread_runner.py and examples/threading_example.py
+- added dialogs/progress and  examples/threading_progress_dialog
 
 ## [0.1.1] - 2025-04-09
 ### Added
