@@ -7,17 +7,12 @@ name = "WrapSideSix"
 version = "0.1.0"
 description = "A reusable Python library for PySide6 widgets"
 authors = [{ name = "David", email = "dave@chatrecall.com" }]
+requires-python = ">=3.13"
+
 dependencies = [
     "PySide6>=6.8.2",
     "requests>=2.32.3",
 ]
 
 [tool.setuptools]
-package-dir = {"" = "src"}
 include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["src"]
-exclude = ["tests*", "examples*", "build*"]  # Prevents packaging test/example directories
-namespaces = false  # Ensures a standard package structure without implicit namespaces
-
